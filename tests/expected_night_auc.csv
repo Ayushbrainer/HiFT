@@ -1,0 +1,10 @@
+sequence,model,success_auc,frames
+N02006,original,0.399484,406
+N02006,gamma,0.464696,406
+N02006,gamma_anchor,0.325006,406
+N08019,original,0.369104,422
+N08019,gamma,0.352516,422
+N08019,gamma_anchor,0.598623,422
+N04005,original,0.735255,679
+N04005,gamma,0.742759,679
+N04005,gamma_anchor,0.734343,679
