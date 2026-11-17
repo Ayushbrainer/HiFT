@@ -39,4 +39,4 @@ On the held-out UAV123 daytime set (30 videos) none of the three differences is 
 - Single runs; the 23-video benchmarks have wide intervals.
 - The analysis scripts are our own, not the official toolkit; only the per-video success and precision numbers come from the official pysot evaluation code.
 
-All experiments that were run, the code and logs for them, and the evidence behind every claim are on branch night-full (commit eb54372e43b39731192950ac1ddc1c26fa77ab10) and in docs/experiments_log.md there.
+Code, job scripts and the logbook (docs/experiments_log.md) are on branch night-full (commit eb54372e43b39731192950ac1ddc1c26fa77ab10). The per-video CSVs, claims.md and figures are in the separate night_evidence package, not in git.

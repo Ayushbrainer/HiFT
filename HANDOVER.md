@@ -62,4 +62,4 @@ def crop_for_network(img, centre, original_size, model_size, channel_mean):
     patch = cv2.LUT(patch, GAMMA_LUT)                                   # <- the only new line; apply to BOTH crops
     return to_network_input(patch)                                      # float32 / tensor conversion as before
 ```
-5. **The effect on any other model must be tested.** In our ablation, run A (fine-tuned without gamma augmentation) was hurt by gamma 0.6: success AUC on UAVDark135 test fell from 0.468 to 0.426 and on the held-out daytime set from 0.607 to 0.595 (logbook entry 71 in `docs/experiments_log.md` on `night-full`). A model trained without such augmentation can lose with gamma.
+5. **The effect on any other model must be tested.** In our ablation, run A (fine-tuned without gamma augmentation) was hurt by gamma 0.6: success AUC on UAVDark135 test fell from 0.468 to 0.426 and on the held-out daytime set from 0.607 to 0.595 (logbook entry 71 in `docs/experiments_log.md` on `night-full`; also added to `night_evidence/claims.md`). A model trained without such augmentation can lose with gamma.
