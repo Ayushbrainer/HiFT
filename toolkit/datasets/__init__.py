@@ -2,6 +2,7 @@ from .uav import UAVDataset
 from .dtb import DTBDataset
 from .uav10fps import UAV10Dataset
 from .uav20l import UAV20Dataset
+from .nat import NATDataset
 class DatasetFactory(object):
     @staticmethod
     def create_dataset(**kwargs):
@@ -21,6 +22,8 @@ class DatasetFactory(object):
             dataset = UAV10Dataset(**kwargs)
         elif 'UAV20l' in name:
             dataset = UAV20Dataset(**kwargs)
+        elif 'NAT' in name:
+            dataset = NATDataset(**kwargs)
         elif 'UAV123' in name:
             dataset = UAVDataset(**kwargs)
         else:
