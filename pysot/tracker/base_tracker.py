@@ -35,7 +35,7 @@ class BaseTracker(object):
 
 
 class SiameseTracker(BaseTracker):
-    def get_subwindow(self, im, pos, model_sz, original_sz, avg_chans):
+    def get_subwindow(self, im, pos, model_sz, original_sz, avg_chans, enhance=None):
         """
         args:
             im: bgr based image
@@ -43,6 +43,7 @@ class SiameseTracker(BaseTracker):
             model_sz: exemplar size
             s_z: original size
             avg_chans: channel average
+            enhance: optional f(uint8 bgr patch) -> uint8 bgr patch, applied to the resized crop
         """
         if isinstance(pos, float):
             pos = [pos, pos]
@@ -86,6 +87,8 @@ class SiameseTracker(BaseTracker):
 
         if not np.array_equal(model_sz, original_sz):
             im_patch = cv2.resize(im_patch, (model_sz, model_sz))
+        if enhance is not None:
+            im_patch = enhance(np.ascontiguousarray(im_patch))
         im_patch = im_patch.transpose(2, 0, 1)
         im_patch = im_patch[np.newaxis, :, :, :]
         im_patch = im_patch.astype(np.float32)

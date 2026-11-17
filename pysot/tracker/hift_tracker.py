@@ -6,6 +6,7 @@ import numpy as np
 import torch.nn.functional as F
 from pysot.core.config import cfg
 from pysot.tracker.base_tracker import SiameseTracker
+from pysot.utils.enhance import make_enhancer
 
 class HiFTTracker(SiameseTracker):
     def __init__(self, model):
@@ -18,6 +19,10 @@ class HiFTTracker(SiameseTracker):
         self.window = np.tile(window.flatten(), self.anchor_num)
         self.model = model
         self.model.eval()
+        self.enh_t = make_enhancer(cfg.TRACK.ENH_TEMPLATE, cfg.TRACK.ENH_GAMMA, cfg.TRACK.ENH_CLIP,
+                                   cfg.TRACK.ENH_DENOISE)
+        self.enh_s = make_enhancer(cfg.TRACK.ENH_SEARCH, cfg.TRACK.ENH_GAMMA, cfg.TRACK.ENH_CLIP,
+                                   cfg.TRACK.ENH_DENOISE)
 
     def generate_anchor(self,mapp):  
         def dcon(x):
@@ -96,13 +101,19 @@ class HiFTTracker(SiameseTracker):
         # get crop
         z_crop = self.get_subwindow(img, self.center_pos,
                                     cfg.TRACK.EXEMPLAR_SIZE,
-                                    s_z, self.channel_average)
+                                    s_z, self.channel_average, self.enh_t)
         self.template=z_crop
 
     
         self.model.template(z_crop)
 
   
+    def reset_box(self, bbox):
+        """Diagnostic: put the tracked box (x, y, w, h) back on a given position without touching the template."""
+        self.center_pos = np.array([bbox[0]+(bbox[2]-1)/2,
+                                    bbox[1]+(bbox[3]-1)/2])
+        self.size = np.array([bbox[2], bbox[3]])
+
     def con(self, x):
         return  x*(cfg.TRAIN.SEARCH_SIZE//2)
 
@@ -125,7 +136,7 @@ class HiFTTracker(SiameseTracker):
         
         x_crop = self.get_subwindow(img, self.center_pos,
                                     cfg.TRACK.INSTANCE_SIZE,
-                                    round(s_x), self.channel_average)
+                                    round(s_x), self.channel_average, self.enh_s)
         
 
         outputs = self.model.track(x_crop)
