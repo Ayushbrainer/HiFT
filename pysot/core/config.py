@@ -240,6 +240,15 @@ __C.TRACK.w2=1.0
 __C.TRACK.w3=1.6 
 
 __C.TRACK.LARGER=1.4
+
+# Crop enhancement for low light, applied to the network input crops only.
+# modes: 'none', 'gamma', 'clahe', 'gamma_clahe'
+__C.TRACK.ENH_TEMPLATE = 'none'
+__C.TRACK.ENH_SEARCH = 'none'
+__C.TRACK.ENH_GAMMA = 0.4
+__C.TRACK.ENH_CLIP = 3.0
+# optional denoising before the enhancement: 'none', 'gauss3', 'gauss5', 'bilateral', 'nlm'
+__C.TRACK.ENH_DENOISE = 'none'
 # Exemplar size
 __C.TRACK.EXEMPLAR_SIZE = 127
 
